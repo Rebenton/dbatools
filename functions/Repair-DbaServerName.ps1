@@ -230,7 +230,7 @@ Skips some prompts/confirms but not all of them.
 			
 			try
 			{
-				$allsqlservices = Get-Service -ComputerName $server.ComputerNamePhysicalNetBIOS -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -like "SQL*$instance*" -and $_.Status -eq "Running" }
+				$allsqlservices = Get-Service -ComputerName $instance.ComputerName -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -like "SQL*$instance*" -and $_.Status -eq "Running" }
 			}
 			catch
 			{
@@ -239,7 +239,7 @@ Skips some prompts/confirms but not all of them.
 			
 			if ($nametest.Warnings.length -gt 0)
 			{
-				$reportingservice = Get-Service -ComputerName $server.ComputerNamePhysicalNetBIOS -DisplayName "SQL Server Reporting Services ($instance)" -ErrorAction SilentlyContinue
+				$reportingservice = Get-Service -ComputerName $instance.ComputerName -DisplayName "SQL Server Reporting Services ($instance)" -ErrorAction SilentlyContinue
 				
 				if ($reportingservice.Status -eq "Running")
 				{
@@ -284,12 +284,12 @@ Skips some prompts/confirms but not all of them.
 			
 			if ($allsqlservices -eq $null)
 			{
-				Write-Warning "Could not contact $($server.ComputerNamePhysicalNetBIOS) using Get-Service. You must manually restart the SQL Server instance."
+				Write-Warning "Could not contact $($instance.ComputerName) using Get-Service. You must manually restart the SQL Server instance."
 				$needsrestart = $true
 			}
 			else
 			{
-				if ($Pscmdlet.ShouldProcess($server.ComputerNamePhysicalNetBIOS, "Rename complete! The SQL Service must be restarted to commit the changes. Would you like to restart the $instancname instance now?"))
+				if ($Pscmdlet.ShouldProcess($instance.ComputerName, "Rename complete! The SQL Service must be restarted to commit the changes. Would you like to restart the $instancname instance now?"))
 				{
 					try
 					{

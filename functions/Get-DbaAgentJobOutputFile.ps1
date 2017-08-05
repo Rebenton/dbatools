@@ -122,7 +122,7 @@
                             Job                  = $j.Name
                             JobStep              = $step.Name
                             OutputFileName       = $Step.OutputFileName
-                            RemoteOutputFileName = Join-AdminUNC $Server.ComputerNamePhysicalNetBIOS $Step.OutputFileName
+                            RemoteOutputFileName = Join-AdminUNC $instance.ComputerName $Step.OutputFileName
                         }
                     }
                     else {
